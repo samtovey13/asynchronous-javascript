@@ -90,14 +90,31 @@ describe('GET /joke/random', () => {
   });
 });
 
-describe('GET /joke/random/personal/:first/:last should respond with a message', () => {
-  it('GET /joke/random/personal/:first/:last should respond with "This is the personalised joke endpoint"', done => {
+describe('GET /joke/random/personal/:first/:last', () => {
+  it('GET /joke/random/personal/:first/:last should respond with a personalised joke', async () => {
+    const mockResponse = {
+      type: 'success',
+      value: {
+        id: 402,
+        joke: 'Random joke about Manchester Codes.',
+        categories: [],
+      },
+    };
+
+    nock('https://api.icndb.com')
+      .get('/jokes/random')
+      .query({ exclude: '[explicit]', firstName: 'Manchester', lastName: 'Codes' })
+      .reply(200, mockResponse);
+
     request(app)
-      .get('/joke/random/personal/:first/:last')
+      .get('/joke/random/personal/Manchester/Codes')
       .then(res => {
         expect(res.statusCode).toEqual(200);
-        expect(res.body.message).toEqual('This is the personalised joke endpoint');
-        done();
+        expect(res.body.personalJoke).toEqual({
+          id: 402,
+          joke: 'Random joke about Manchester Codes.',
+          categories: [],
+        });
       });
   });
 });
