@@ -58,6 +58,18 @@ describe('GET /jokes', () => {
         done();
       });
   });
+  it('should respond with an error message if something goes wrong', done => {
+    nock('https://api.icndb.com')
+      .get('/jokes')
+      .replyWithError({ statusCode: 500, message: 'huge error' });
+    request(app)
+      .get('/jokes')
+      .then(res => {
+        expect(res.statusCode).toEqual(500);
+        expect(res.body.error).toEqual('huge error');
+        done();
+      });
+  });
 });
 
 describe('GET /joke/random', () => {
@@ -88,6 +100,19 @@ describe('GET /joke/random', () => {
         done();
       });
   });
+  it('should respond with an error message if something goes wrong', done => {
+    nock('https://api.icndb.com')
+      .get('/jokes/random')
+      .query({ exclude: '[explicit]' })
+      .replyWithError({ statusCode: 500, message: 'huge error' });
+    request(app)
+      .get('/joke/random')
+      .then(res => {
+        expect(res.statusCode).toEqual(500);
+        expect(res.body.error).toEqual('huge error');
+        done();
+      });
+  });
 });
 
 describe('GET /joke/random/personal/:first/:last', () => {
@@ -115,6 +140,18 @@ describe('GET /joke/random/personal/:first/:last', () => {
           joke: 'Random joke about Manchester Codes.',
           categories: [],
         });
+      });
+  });
+  it('should respond with an error message if something goes wrong', async () => {
+    nock('https://api.icndb.com')
+      .get('/jokes/random')
+      .query({ exclude: '[explicit]', firstName: 'Manchester', lastName: 'Codes' })
+      .replyWithError({ statusCode: 500, message: 'huge error' });
+    request(app)
+      .get('/joke/random/personal/Manchester/Codes')
+      .then(res => {
+        expect(res.statusCode).toEqual(500);
+        expect(res.body.error).toEqual('huge error');
       });
   });
 });

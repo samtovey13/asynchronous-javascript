@@ -10,10 +10,11 @@ const mainController = (req, res) => {
 const jokesController = (req, res) => {
   request('https://api.icndb.com/jokes', (error, jokesApiResponse) => {
     if (error) {
-      console.log(error);
+      res.status(error.statusCode).send({ error: error.message });
+    } else {
+      const parsedResponse = JSON.parse(jokesApiResponse.body);
+      res.send({ jokes: parsedResponse.value });
     }
-    const parsedResponse = JSON.parse(jokesApiResponse.body);
-    res.send({ jokes: parsedResponse.value });
   });
 };
 
@@ -24,7 +25,7 @@ const randomController = (req, res) => {
       res.send({ randomJoke: response.data.value });
     })
     .catch(error => {
-      console.log(error);
+      res.status(error.statusCode).send({ error: error.message });
     });
 };
 
@@ -36,8 +37,7 @@ const personalisedController = async (req, res) => {
     );
     return res.send({ personalJoke: response.data.value });
   } catch (error) {
-    // eslint-disable-next-line
-    console.log(error);
+    res.status(error.statusCode).send({ error: error.message });
   }
 };
 
