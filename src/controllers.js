@@ -1,3 +1,5 @@
+const request = require('request');
+
 const mainController = (req, res) => {
   res.send({
     message: 'Welcome to my jokes API!',
