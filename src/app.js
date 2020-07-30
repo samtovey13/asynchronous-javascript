@@ -1,7 +1,7 @@
 const express = require('express');
 const {
   mainController,
-  allController,
+  jokesController,
   randomController,
   personalisedController,
 } = require('./controllers');
@@ -9,7 +9,7 @@ const {
 const app = express();
 
 app.get('/', mainController);
-app.get('/jokes', allController);
+app.get('/jokes', jokesController);
 app.get('/joke/random', randomController);
 app.get('/joke/random/personal/:first/:last', personalisedController);
 
