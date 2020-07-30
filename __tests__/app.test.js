@@ -1,3 +1,6 @@
+/**
+ * @jest-environment node
+ */
 const request = require('supertest');
 const nock = require('nock');
 const app = require('../src/app');
@@ -57,13 +60,31 @@ describe('GET /jokes', () => {
   });
 });
 
-describe('GET /joke/random should respond with a message', () => {
-  it('GET /joke/random should respond with "This is the random joke endpoint"', done => {
+describe('GET /joke/random', () => {
+  it('GET /joke/random should respond with a random joke object', done => {
+    const mockResponse = {
+      type: 'success',
+      value: {
+        id: 115,
+        joke: 'i am a random joke',
+        categories: [],
+      },
+    };
+
+    nock('https://api.icndb.com')
+      .get('/jokes/random')
+      .query({ exclude: '[explicit]' })
+      .reply(200, mockResponse);
+
     request(app)
       .get('/joke/random')
       .then(res => {
         expect(res.statusCode).toEqual(200);
-        expect(res.body.message).toEqual('This is the random joke endpoint');
+        expect(res.body.randomJoke).toEqual({
+          categories: [],
+          id: 115,
+          joke: 'i am a random joke',
+        });
         done();
       });
   });
