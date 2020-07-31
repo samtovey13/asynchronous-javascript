@@ -5,13 +5,13 @@ const request = require('supertest');
 const nock = require('nock');
 const app = require('../src/app');
 
-describe('GET / should respond with a welcome message', () => {
-  it('GET / should respond with Welcome to my jokes API!', done => {
+describe('GET / homepage', () => {
+  it('GET / should respond with the homepage markup', done => {
     request(app)
       .get('/')
       .then(res => {
         expect(res.statusCode).toEqual(200);
-        expect(res.body.message).toEqual('Welcome to my jokes API!');
+        expect(res.text).toContain('Hello, welcome to my jokes API');
         done();
       });
   });
