@@ -1,14 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chuck Norris API request random jokes generator</title>
+    <link href="/styles.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Epilogue&display=swap" rel="stylesheet">
+  </head>
+  <body>
+    <h1>Chuck Norris Jokes Generator</h1>
+    <p>Hello, welcome to my jokes API!</p>
+    <h2>Here are your route options to proceed:</h2>
+    <h3>To bring up a list of all jokes:</h3>
+    <p><a href="/jokes">All Jokes</a></p>
+    <h3>To generate a random joke:</h3>
+    <p><a href="/joke/random">Random Joke</a></p>
+    <h3>To generate a personalised joke:</h3>
+    <form>
+      <label for="first-name">First Name:</label>
+      <input type="text" name="first-name" id="first-name" />
+      <label for="last-name">Last Name:</label>
+      <input type="text" name="last-name" id="last-name" />
+      <a id="button-anchor"><button type="button" id="personalised-joke-button">Go!</button></a>
+    </form>
 
-  <h1>Chuck Norris Jokes Generator</h1>
-  <h2>Hello, welcome to my jokes API</h2>
-  
-</body>
+    <script>
+      const button = document.getElementById('personalised-joke-button');
+      const generatePersonalisedJoke = function() {
+        const firstName = document.getElementById('first-name').value;
+        const lastName = document.getElementById('last-name').value;
+        const buttonAnchor = document.getElementById('button-anchor');
+        buttonAnchor.href = `/joke/random/personal/${firstName}/${lastName}`;
+      };
+      button.addEventListener('click', generatePersonalisedJoke);
+    </script>
+  </body>
 </html>
